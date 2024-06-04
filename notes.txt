@@ -1,0 +1,31 @@
+Celery is a powerful, production-ready asynchronous job queue that allows you to run time-consuming Python functions in the background.
+This enables your application to respond to user requests quickly, while long-running tasks are passed onto the queue for processing.
+Celery operates based on the Producer/Consumer model, where producers (typically web services handling web requests) push tasks into a message queue during request processing.
+These tasks could be time-consuming or periodic tasks that should not block the main application flow. The message queue acts as a buffer between the producers and consumers (workers).
+Workers are separate processes that pick up these tasks from the queue and execute them asynchronously, thus reducing the performance load on the web application by running tasks in the background.
+
+A message broker plays a crucial role in Celery's architecture. It mediates communication between clients (producers) and workers.
+Clients add messages (tasks) to the queue through the broker, which then delivers those messages to available workers. Commonly used message brokers include Redis, RabbitMQ, and others.
+The choice of broker can affect the performance and scalability of your Celery setup. For example, RabbitMQ is often used as the primary broker, while Redis might be chosen for its ability
+to also serve as a result backend, storing the outcomes of processed tasks [2][4][5].
+
+A Celery worker is a process that connects to the message broker and waits for tasks to be dispatched to it. When a task arrives in the queue, the worker picks it up and executes it.
+Workers can operate in parallel, allowing for the distribution of tasks across multiple machines if needed. This model supports scaling and helps in managing large volumes of tasks efficiently.
+Each worker can be configured to control a certain number of processes, which are responsible for executing the tasks. The `--concurrency` option specifies the number of worker processes that should be spawned,
+ affecting how many tasks can be processed in parallel [4].
+
+In summary, Celery leverages the Producer/Consumer pattern to handle asynchronous tasks efficiently.
+Producers enqueue tasks into a message queue mediated by a message broker, and workers pick up these tasks from the queue to execute them.
+This architecture allows for scalable and efficient processing of time-consuming tasks, improving the responsiveness of web applications.
+
+Citations:
+[1] https://en.wikipedia.org/wiki/RabbitMQ
+[2] https://medium.com/scalereal/understanding-celery-part-1-why-use-celery-and-what-is-celery-b96bf958cd80(imp)
+[3] https://www.vinta.com.br/blog/celery-overview-archtecture-and-how-it-works
+[4] https://stackoverflow.com/questions/34706597/how-does-celery-work
+[5] https://medium.com/@aravindsatvik/introduction-to-celery-a-distributed-task-queue-fcfe47a43c73
+[6] http://www.ines-panker.com/2020/10/28/celery-explained.html
+[7] https://aws.amazon.com/blogs/hpc/run-celery-workers-for-compute-intensive-tasks-with-aws-batch/
+[8] https://realpython.com/asynchronous-tasks-with-django-and-celery/
+[9] https://www.fullstackpython.com/celery.html
+[10] https://signoz.io/blog/celery-worker/
